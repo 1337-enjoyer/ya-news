@@ -77,3 +77,10 @@ def news_with_comments(db, news, comment_author):
         comment.created = now + timedelta(days=index)
         comment.save()
     return news
+
+
+@pytest.fixture
+def comment_form_data():
+    return {
+        'text': 'гидроэлектростанция'
+    }

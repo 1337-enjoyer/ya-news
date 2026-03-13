@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.test.client import Client
+from django.utils import timezone
 
 import pytest
 
@@ -64,3 +65,15 @@ def all_news(db):
     ]
     News.objects.bulk_create(all_news)
     return News.objects.all()
+
+
+@pytest.fixture
+def news_with_comments(db, news, comment_author):
+    now = timezone.now()
+    for index in range(10):
+        comment = Comment.objects.create(
+            news=news, author=comment_author, text=f'Tекст {index}',
+        )
+        comment.created = now + timedelta(days=index)
+        comment.save()
+    return news
